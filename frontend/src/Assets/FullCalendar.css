@@ -1,0 +1,22 @@
+.rbc-date-cell {
+    font-size: 35px !important;
+    font-weight: 300;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+    padding-top: 40px;
+}
+.bg-cell-1shift{
+    background-color: #999c0067;
+    color: "black";
+}
+.bg-cell-2shift{
+    background-color: #00b14d79;
+    color: "black";
+}
+.bg-cell-off{
+    background-color: #6b6b6b7e;
+    color: "black";
+}
+.rbc-selected-cell {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}

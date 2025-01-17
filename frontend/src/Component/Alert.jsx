@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-const Alert = ({type,message,setshowAlert}) => {
+const Alert = ({type,message,setNotif}) => {
     const [fadeOut, setFadeOut] = useState(false); // State to control fade-out effect
     let title = ""
     let classAlert = ""
+    const [msg,setMsg] = useState("") 
 
     switch (type) {
         case "success":
@@ -23,21 +24,38 @@ const Alert = ({type,message,setshowAlert}) => {
     
         case "danger":
             title = "Error"
-            classAlert = "alert alert-error alert-dismissible fade show"
+            classAlert = "alert alert-danger alert-dismissible fade show"
             break;
         default:
             title = "Undefined"
-            classAlert = "alert alert-error alert-dismissible fade show"
+            classAlert = "alert alert-danger alert-dismissible fade show"
             break;
     }
 
     useEffect(() => {
+        const checkMessage = () => {
+            if(Array.isArray(message)){
+                if(message.response.data.res){
+                    setMsg(message.response.data.res)
+                }else{
+                    setMsg(message.response.data)
+                }
+            }else{
+                setMsg(message)
+            }
+        }
+        checkMessage();
+
         const timeout = setTimeout(() => {
             setFadeOut(true)
         }, 3000)
 
         const fadeTimeout = setTimeout(() => {
-            setshowAlert(false)
+            setNotif({
+                show:false,
+                type:"",
+                msg:""
+            })
         }, 3500)
 
         return () => {
@@ -53,6 +71,7 @@ const Alert = ({type,message,setshowAlert}) => {
                 className={`${classAlert} ${fadeOut ? "fade-out" : ""}`}
                 role="alert" 
                 style={{
+                    zIndex:1000,
                     position:"absolute",
                     top:10,
                     right:10,
@@ -60,8 +79,7 @@ const Alert = ({type,message,setshowAlert}) => {
                     opacity: fadeOut ? 0 : 1, // Control visibility during fade-out
                 }}
             >
-                <strong>{title}</strong> {message}
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{title}</strong> <div dangerouslySetInnerHTML={{ __html: msg }} />
             </div>
         </>
     )
